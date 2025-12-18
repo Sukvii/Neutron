@@ -51,17 +51,7 @@ repositories {
 }
 
 dependencies {
-    embed("com.github.Nova-Committee:sjl10n-scala:1.0.0") {
-        exclude module: 'scala-library'
-        exclude module: 'scala-reflect'
-        exclude module: 'log4j-api'
-        exclude module: 'log4j-core'
-        exclude module: 'commons-io'
-        exclude module: 'commons-lang3'
-        exclude module: 'gson'
-        exclude module: 'guava'
-    }
-    embed('com.github.Nova-Committee:DateUtils:1.0.0')
+
     implementation('com.github.Nova-Committee:Proton:Forge-1.7.10-0.0.2')
     compileOnly("curse.maven:worldborder-forge-233231:2266362")
 }
