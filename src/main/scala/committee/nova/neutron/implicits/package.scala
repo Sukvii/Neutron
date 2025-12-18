@@ -40,7 +40,11 @@ package object implicits {
     def teleport(dim: Int, x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Unit = {
       player match {
         case mp: EntityPlayerMP =>
-          if (dim != mp.dimension) mp.travelToDimension(dim)
+          if (dim != mp.dimension) {
+            val server = MinecraftServer.getServer
+            val world = server.worldServerForDimension(dim)
+            server.getConfigurationManager.transferPlayerToDimension(mp, dim, new Utilities.Teleportation.TeleporterNoPortal(world))
+          }
           mp.playerNetServerHandler.setPlayerLocation(x, y, z, yaw, pitch)
           mp.playNotifySound("mob.endermen.portal")
       }

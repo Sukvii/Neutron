@@ -16,7 +16,8 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.server.MinecraftServer
 import net.minecraft.util.{ChatComponentText, DamageSource, IChatComponent, Vec3}
-import net.minecraft.world.WorldServer
+import net.minecraft.world.{Teleporter, WorldServer}
+import net.minecraft.entity.Entity
 
 import java.lang.{String => JString}
 import java.math.{RoundingMode, BigDecimal => JDecimal}
@@ -118,6 +119,25 @@ object Utilities {
         }
       }
       if (tries >= ServerConfig.getRtpMaxTriesOnFindingPosition) None else getSafePosToTeleport(world, x, z, tries + 1)
+    }
+
+    class TeleporterNoPortal(world: WorldServer) extends Teleporter(world) {
+      override def makePortal(p_85188_1_ : Entity): Boolean = true
+
+      override def placeInExistingPortal(p_77184_1_ : Entity, p_77184_2_ : Double, p_77184_4_ : Double, p_77184_6_ : Double, p_77184_8_ : Float): Boolean = {
+        p_77184_1_.setLocationAndAngles(p_77184_2_, p_77184_4_, p_77184_6_, p_77184_1_.rotationYaw, p_77184_1_.rotationPitch)
+        true
+      }
+
+      override def placeInPortal(p_77185_1_ : Entity, p_77185_2_ : Double, p_77185_4_ : Double, p_77185_6_ : Double, p_77185_8_ : Float) {
+        p_77185_1_.setLocationAndAngles(p_77185_2_, p_77185_4_, p_77185_6_, p_77185_1_.rotationYaw, 0.0F)
+        p_77185_1_.motionX = 0.0D
+        p_77185_1_.motionY = 0.0D
+        p_77185_1_.motionZ = 0.0D
+      }
+
+      override def removeStalePortalLocations(p_85189_1_ : Long) {
+      }
     }
   }
 
